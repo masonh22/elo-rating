@@ -1,14 +1,92 @@
 {
   "users": {
     "mhall": {
-      "password": "blankfornow",
+      "password": "5f4dcc3b5aa765d61d8327deb882cf99",
       "name": "Mason",
       "games_played": 0,
       "rating": 2000
     },
+    "wjrolf": {
+      "password": "5f4dcc3b5aa765d61d8327deb882cf99",
+      "name": "Will J.",
+      "games_played": 0,
+      "rating": 2000
+    },
+    "pherman": {
+      "password": "5f4dcc3b5aa765d61d8327deb882cf99",
+      "name": "Pat",
+      "games_played": 0,
+      "rating": 2000
+    },
+    "nmadhavani": {
+      "password": "5f4dcc3b5aa765d61d8327deb882cf99",
+      "name": "Neil",
+      "games_played": 0,
+      "rating": 2000
+    },
+    "rneafsey": {
+      "password": "5f4dcc3b5aa765d61d8327deb882cf99",
+      "name": "Ryan",
+      "games_played": 0,
+      "rating": 2000
+    },
+    "wsilverman": {
+      "password": "5f4dcc3b5aa765d61d8327deb882cf99",
+      "name": "Will S.",
+      "games_played": 0,
+      "rating": 2000
+    },
+    "clombardo": {
+      "password": "5f4dcc3b5aa765d61d8327deb882cf99",
+      "name": "Cal",
+      "games_played": 0,
+      "rating": 2000
+    },
+    "asanchez": {
+      "password": "5f4dcc3b5aa765d61d8327deb882cf99",
+      "name": "Andres",
+      "games_played": 0,
+      "rating": 2000
+    },
+    "dcowser": {
+      "password": "5f4dcc3b5aa765d61d8327deb882cf99",
+      "name": "Derian",
+      "games_played": 0,
+      "rating": 2000
+    },
+    "asaliling": {
+      "password": "5f4dcc3b5aa765d61d8327deb882cf99",
+      "name": "Adam",
+      "games_played": 0,
+      "rating": 2000
+    },
+    "dcritch": {
+      "password": "5f4dcc3b5aa765d61d8327deb882cf99",
+      "name": "David",
+      "games_played": 0,
+      "rating": 2000
+    },
+    "ahernandez": {
+      "password": "5f4dcc3b5aa765d61d8327deb882cf99",
+      "name": "Arturo",
+      "games_played": 0,
+      "rating": 2000
+    },
+    "aagrawal": {
+      "password": "5f4dcc3b5aa765d61d8327deb882cf99",
+      "name": "Arnav",
+      "games_played": 0,
+      "rating": 2000
+    },
     "jepstein": {
-      "password": "blankfornow",
+      "password": "5f4dcc3b5aa765d61d8327deb882cf99",
       "name": "Jordan",
+      "games_played": 0,
+      "rating": 2000
+    },
+    "jjiang": {
+      "password": "5f4dcc3b5aa765d61d8327deb882cf99",
+      "name": "Jimmy",
       "games_played": 0,
       "rating": 2000
     }

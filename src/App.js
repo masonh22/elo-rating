@@ -149,7 +149,6 @@ class History extends React.Component {
 
   componentDidMount() {
     database.ref('history').limitToLast(5).once('value', data => {
-      console.log('here')
       this.setState(() => {
         const history = [];
         data.forEach(event => {
@@ -283,9 +282,6 @@ class App extends React.Component {
           mmr_change: change,
           date: (d.getMonth() + 1).toString() + '/' + d.getDate().toString(),
         }
-
-        console.log('mmrW: ' + mmrW.toString());
-        console.log(historyKey);
 
         const updates = {};
         updates['/history/' + historyKey] = newHistory;
