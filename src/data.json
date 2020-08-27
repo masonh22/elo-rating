@@ -1,0 +1,25 @@
+{
+  "users": {
+    "mhall": {
+      "password": "blankfornow",
+      "name": "Mason",
+      "games_played": 0,
+      "rating": 2000
+    },
+    "jepstein": {
+      "password": "blankfornow",
+      "name": "Jordan",
+      "games_played": 0,
+      "rating": 2000
+    }
+  },
+  "history": {
+    "game0": {
+      "winner": "mhall",
+      "loser": "mhall",
+      "mmr_change": 25,
+      "date": "8/27",
+      "posted_by": "mhall"
+    }
+  }
+}
