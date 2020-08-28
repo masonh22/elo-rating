@@ -1,14 +1,14 @@
 {
   "files": {
     "main.css": "/elo-rating/static/css/main.c421e6b4.chunk.css",
-    "main.js": "/elo-rating/static/js/main.40191857.chunk.js",
-    "main.js.map": "/elo-rating/static/js/main.40191857.chunk.js.map",
+    "main.js": "/elo-rating/static/js/main.ca214b53.chunk.js",
+    "main.js.map": "/elo-rating/static/js/main.ca214b53.chunk.js.map",
     "runtime-main.js": "/elo-rating/static/js/runtime-main.0652fda2.js",
     "runtime-main.js.map": "/elo-rating/static/js/runtime-main.0652fda2.js.map",
     "static/js/2.9ae154a9.chunk.js": "/elo-rating/static/js/2.9ae154a9.chunk.js",
     "static/js/2.9ae154a9.chunk.js.map": "/elo-rating/static/js/2.9ae154a9.chunk.js.map",
     "index.html": "/elo-rating/index.html",
-    "precache-manifest.5c7fafe03126529eef844e7564c2a339.js": "/elo-rating/precache-manifest.5c7fafe03126529eef844e7564c2a339.js",
+    "precache-manifest.84b178e4a939b30953a4ef52071c48ce.js": "/elo-rating/precache-manifest.84b178e4a939b30953a4ef52071c48ce.js",
     "service-worker.js": "/elo-rating/service-worker.js",
     "static/css/main.c421e6b4.chunk.css.map": "/elo-rating/static/css/main.c421e6b4.chunk.css.map",
     "static/js/2.9ae154a9.chunk.js.LICENSE.txt": "/elo-rating/static/js/2.9ae154a9.chunk.js.LICENSE.txt"
@@ -17,6 +17,6 @@
     "static/js/runtime-main.0652fda2.js",
     "static/js/2.9ae154a9.chunk.js",
     "static/css/main.c421e6b4.chunk.css",
-    "static/js/main.40191857.chunk.js"
+    "static/js/main.ca214b53.chunk.js"
   ]
 }
