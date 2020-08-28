@@ -14,44 +14,6 @@ import md5 from 'md5';
 
 const database = firebase.database();
 
-class Leaderboard {
-  constructor(players) {
-    // Add players to sorted list
-    if (players.length === 0) { this.list = []; }
-    else {
-      this.list = players.length > 0 ? [players[0]] : []
-      for (var i = 1; i < players.length; i++) {
-        this.add_player(players[i])
-      }
-    }
-  }
-
-  add_player(player) {
-    if (this.list[0].rating < player.rating) {
-      this.list.unshift(player);
-    }
-    else {
-      var j = 1;
-      while (j < this.list.length && this.list[j].rating > player.rating) {
-        j += 1;
-      }
-      this.list.splice(j, 0, player);
-    }
-  }
-
-  update_rating(name, change) {
-    var i = 0;
-    while (i < this.list.length && this.list[i].name !== name) {
-      i += 1;
-    }
-    if (i === this.list.length) throw "Name not found";
-    const player = this.list[i];
-    this.list.splice(i, 1);
-    player.rating += change;
-    this.add_player(player);
-  }
-
-}
 
 const BottomNav = props => {
   const value = props.value;
@@ -74,7 +36,7 @@ const BottomNav = props => {
 }
 
 const LeaderboardView = props => {
-  const list = props.players.map((player, rank) =>
+  const list = props.leaderboard.map((player, rank) =>
     <li key={player.username}>{player.name}, MMR: {player.rating}, Games played: {player.games_played}</li>
   );
   return <ol>{list}</ol>
@@ -198,8 +160,8 @@ const Login = props => {
 }
 
 const Content = props => {
-  const views = [<LeaderboardView players={props.leaderboard.list} />,
-  <ReportView players={props.leaderboard.list} submit={props.submit} />,
+  const views = [<LeaderboardView leaderboard={props.leaderboard} />,
+  <ReportView players={props.leaderboard} submit={props.submit} />,
   <History />,
   <Login submit={props.login} />];
   return views[props.view];
@@ -215,8 +177,8 @@ class App extends React.Component {
     super(props);
     this.state = {
       current_view: 0,
-      players: [],
-      leaderboard: new Leaderboard([]),
+      players: {},
+      leaderboard: [],
       user: null,
     };
   }
@@ -224,32 +186,30 @@ class App extends React.Component {
   componentDidMount() {
     database.ref('users').orderByChild('rating').on('value', data => {
       this.setState(() => {
-        const players = [];
+        const leaderboard = [];
         data.forEach(user => {
           const player = user.toJSON();
           player['username'] = user.key;
-          players.push(player);
+          leaderboard.unshift(player);
         });
-        const leaderboard = new Leaderboard(players);
-        return { players, leaderboard };
+        return { players: data.val(), leaderboard };
       })
     });
   }
 
   login(user, pass) {
-    let i = 0;
-    while (i < this.state.players.length && this.state.players[i].username !== user) {
-      i += 1;
-    }
-    if (i === this.state.players.length) {
+    if (!this.state.players[user]) {
       alert("Username is incorrect");
       return;
     }
-    else if (md5(pass) !== this.state.players[i].password) {
-      alert("Password is incorrect");
-      return;
-    }
-    this.setState({ current_view: 0, user: user });
+    database.ref('passwords').once('value').then(data => {
+      if (md5(pass) !== data.val()[user]) {
+        alert("Password is incorrect");
+        return;
+      }
+      alert(`Signed in as ${user}`);
+      this.setState({ current_view: 0, user: user });
+    });
   }
 
   change_current_view(val) {
@@ -261,37 +221,35 @@ class App extends React.Component {
       alert("You need to be logged in");
       return;
     }
-    database.ref('users').once('value').then(data => {
-      if (data.hasChild(winner) && data.hasChild(loser)) {
-        const mmrW = data.child(winner + '/rating').val();
-        const mmrL = data.child(loser + '/rating').val();
-        const gamesW = data.child(winner + '/games_played').val();
-        const gamesL = data.child(loser + '/games_played').val();
-        const nameW = data.child(winner + '/name').val();
-        const nameL = data.child(loser + '/name').val();
-        const win_prob = win_probability(mmrW, mmrL);
-        const change = Math.round(win_prob * 50);
+    if (this.state.players[winner] && this.state.players[loser]) {
+      const mmrW = this.state.players[winner].rating;
+      const mmrL = this.state.players[loser].rating;
+      const gamesW = this.state.players[winner].games_played;
+      const gamesL = this.state.players[loser].games_played;
+      const nameW = this.state.players[winner].name;
+      const nameL = this.state.players[loser].name;
+      const win_prob = win_probability(mmrW, mmrL);
+      const change = Math.round(win_prob * 50);
 
-        const d = new Date();
+      const d = new Date();
 
-        const historyKey = database.ref('history').push().key;
-        const newHistory = {
-          winner: nameW,
-          loser: nameL,
-          posted_by: this.state.user,
-          mmr_change: change,
-          date: (d.getMonth() + 1).toString() + '/' + d.getDate().toString(),
-        }
-
-        const updates = {};
-        updates['/history/' + historyKey] = newHistory;
-        updates['users/' + winner + '/rating'] = mmrW + change;
-        updates['users/' + loser + '/rating'] = mmrL - change;
-        updates['users/' + winner + '/games_played'] = gamesW + 1;
-        updates['users/' + loser + '/games_played'] = gamesL + 1;
-        database.ref().update(updates);
+      const historyKey = database.ref('history').push().key;
+      const newHistory = {
+        winner: nameW,
+        loser: nameL,
+        posted_by: this.state.user,
+        mmr_change: change,
+        date: (d.getMonth() + 1).toString() + '/' + d.getDate().toString(),
       }
-    });
+
+      const updates = {};
+      updates['/history/' + historyKey] = newHistory;
+      updates['users/' + winner + '/rating'] = mmrW + change;
+      updates['users/' + loser + '/rating'] = mmrL - change;
+      updates['users/' + winner + '/games_played'] = gamesW + 1;
+      updates['users/' + loser + '/games_played'] = gamesL + 1;
+      database.ref().update(updates);
+    }
     this.change_current_view(0);
   }
 

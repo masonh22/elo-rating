@@ -1,91 +1,76 @@
 {
   "users": {
     "mhall": {
-      "password": "5f4dcc3b5aa765d61d8327deb882cf99",
       "name": "Mason",
       "games_played": 0,
       "rating": 2000
     },
     "wjrolf": {
-      "password": "5f4dcc3b5aa765d61d8327deb882cf99",
       "name": "Will J.",
       "games_played": 0,
       "rating": 2000
     },
     "pherman": {
-      "password": "5f4dcc3b5aa765d61d8327deb882cf99",
       "name": "Pat",
       "games_played": 0,
       "rating": 2000
     },
     "nmadhavani": {
-      "password": "5f4dcc3b5aa765d61d8327deb882cf99",
       "name": "Neil",
       "games_played": 0,
       "rating": 2000
     },
     "rneafsey": {
-      "password": "5f4dcc3b5aa765d61d8327deb882cf99",
       "name": "Ryan",
       "games_played": 0,
       "rating": 2000
     },
     "wsilverman": {
-      "password": "5f4dcc3b5aa765d61d8327deb882cf99",
       "name": "Will S.",
       "games_played": 0,
       "rating": 2000
     },
     "clombardo": {
-      "password": "5f4dcc3b5aa765d61d8327deb882cf99",
       "name": "Cal",
       "games_played": 0,
       "rating": 2000
     },
     "asanchez": {
-      "password": "5f4dcc3b5aa765d61d8327deb882cf99",
       "name": "Andres",
       "games_played": 0,
       "rating": 2000
     },
     "dcowser": {
-      "password": "5f4dcc3b5aa765d61d8327deb882cf99",
       "name": "Derian",
       "games_played": 0,
       "rating": 2000
     },
     "asaliling": {
-      "password": "5f4dcc3b5aa765d61d8327deb882cf99",
       "name": "Adam",
       "games_played": 0,
       "rating": 2000
     },
     "dcritch": {
-      "password": "5f4dcc3b5aa765d61d8327deb882cf99",
       "name": "David",
       "games_played": 0,
       "rating": 2000
     },
     "ahernandez": {
-      "password": "5f4dcc3b5aa765d61d8327deb882cf99",
       "name": "Arturo",
       "games_played": 0,
       "rating": 2000
     },
     "aagrawal": {
-      "password": "5f4dcc3b5aa765d61d8327deb882cf99",
       "name": "Arnav",
       "games_played": 0,
       "rating": 2000
     },
     "jepstein": {
-      "password": "5f4dcc3b5aa765d61d8327deb882cf99",
       "name": "Jordan",
       "games_played": 0,
       "rating": 2000
     },
     "jjiang": {
-      "password": "5f4dcc3b5aa765d61d8327deb882cf99",
       "name": "Jimmy",
       "games_played": 0,
       "rating": 2000
@@ -99,5 +84,22 @@
       "date": "8/27",
       "posted_by": "mhall"
     }
+  },
+  "passwords": {
+    "mhall": "5f4dcc3b5aa765d61d8327deb882cf99",
+    "wjrolf": "5f4dcc3b5aa765d61d8327deb882cf99",
+    "pherman": "5f4dcc3b5aa765d61d8327deb882cf99",
+    "nmadhavani": "5f4dcc3b5aa765d61d8327deb882cf99",
+    "rneafsey": "5f4dcc3b5aa765d61d8327deb882cf99",
+    "wsilverman": "5f4dcc3b5aa765d61d8327deb882cf99",
+    "clombardo": "5f4dcc3b5aa765d61d8327deb882cf99",
+    "asanchez": "5f4dcc3b5aa765d61d8327deb882cf99",
+    "dcowser": "5f4dcc3b5aa765d61d8327deb882cf99",
+    "asaliling": "5f4dcc3b5aa765d61d8327deb882cf99",
+    "dcritch": "5f4dcc3b5aa765d61d8327deb882cf99",
+    "ahernandez": "5f4dcc3b5aa765d61d8327deb882cf99",
+    "aagrawal": "5f4dcc3b5aa765d61d8327deb882cf99",
+    "jepstein": "5f4dcc3b5aa765d61d8327deb882cf99",
+    "jjiang": "5f4dcc3b5aa765d61d8327deb882cf99"
   }
 }
