@@ -139,7 +139,7 @@ class History extends React.Component {
   }
 
   componentDidMount() {
-    database.ref('history').limitToLast(5).once('value', data => {
+    database.ref('history').limitToLast(15).once('value', data => {
       this.setState(() => {
         const history = [];
         data.forEach(event => {
