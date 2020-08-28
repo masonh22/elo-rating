@@ -7,6 +7,7 @@ import Select from '@material-ui/core/Select';
 import FormControl from '@material-ui/core/FormControl';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
+import DataTable from 'react-data-table-component';
 import { makeStyles } from '@material-ui/core/styles';
 import './App.css';
 import firebase from './firebase.js';
@@ -36,10 +37,37 @@ const BottomNav = props => {
 }
 
 const LeaderboardView = props => {
-  const list = props.leaderboard.map((player, rank) =>
-    <li key={player.username}>{player.name}, MMR: {player.rating}, Games played: {player.games_played}</li>
-  );
-  return <ol>{list}</ol>
+  const columns = [
+    {
+      name: 'MMR',
+      selector: 'rating',
+      sortable: true,
+    },
+    {
+      name: 'Name',
+      selector: 'name',
+      sortable: true,
+    },
+    {
+      name: 'Games Played',
+      selector: 'games_played',
+      sortable: true,
+    },
+  ]
+  const customStyles = {
+    rows: {
+      style: { fontSize: '20px' }
+    },
+    headCells: {
+      style: { fontSize: '20px' }
+    }
+  };
+  return (<DataTable
+    columns={columns}
+    data={props.leaderboard}
+    customStyles={customStyles}
+    defaultSortField='rating'
+    defaultSortAsc={false} />);
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -59,9 +87,10 @@ const ReportView = props => {
 
   const makeList = (taken) => {
     const list = [];
-    for (var i = 0; i < props.players.length; i++) {
-      if (props.players[i].username === taken) continue;
-      list.push(<MenuItem value={props.players[i].username}>{props.players[i].name}</MenuItem>)
+    const l2 = props.players.sort((a, b) => a.name < b.name ? -1 : a.name > b.name ? 1 : 0);
+    for (var i = 0; i < l2.length; i++) {
+      if (l2[i].username === taken) continue;
+      list.push(<MenuItem value={l2[i].username}>{l2[i].name}</MenuItem>)
     }
     return list;
   };
@@ -190,7 +219,7 @@ class App extends React.Component {
         data.forEach(user => {
           const player = user.toJSON();
           player['username'] = user.key;
-          leaderboard.unshift(player);
+          leaderboard.push(player);
         });
         return { players: data.val(), leaderboard };
       })
