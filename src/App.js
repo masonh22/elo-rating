@@ -42,25 +42,28 @@ const LeaderboardView = props => {
       name: 'MMR',
       selector: 'rating',
       sortable: true,
+      width: '33.3vw',
     },
     {
       name: 'Name',
       selector: 'name',
-      sortable: true,
+      sortable: false,
+      width: '33.3vw',
     },
     {
       name: 'Games Played',
       selector: 'games_played',
       sortable: true,
       center: true,
+      width: '33.3vw',
     },
   ]
   const customStyles = {
     rows: {
-      style: { fontSize: '20px' }
+      style: { fontSize: '16px' }
     },
     headCells: {
-      style: { fontSize: '20px' }
+      style: { fontSize: '16px' }
     }
   };
   return (<DataTable
@@ -68,6 +71,7 @@ const LeaderboardView = props => {
     data={props.leaderboard}
     customStyles={customStyles}
     defaultSortField='rating'
+    dense
     defaultSortAsc={false} />);
 }
 
@@ -139,30 +143,34 @@ const History = props => {
       name: 'Date',
       selector: 'date',
       sortable: true,
+      width: '25vw',
     },
     {
       name: 'Winner',
       selector: 'winner',
       sortable: true,
+      width: '25vw',
     },
     {
       name: 'Loser',
       selector: 'loser',
       sortable: true,
+      width: '25vw',
     },
     {
       name: 'MMR Change',
       selector: 'mmr_change',
       sortable: true,
       center: true,
+      width: '25vw',
     },
   ]
   const customStyles = {
     rows: {
-      style: { fontSize: '15px' }
+      style: { fontSize: '18px' }
     },
     headCells: {
-      style: { fontSize: '15px' }
+      style: { fontSize: '16px' }
     }
   };
   return (<DataTable
@@ -170,14 +178,11 @@ const History = props => {
     data={props.history}
     customStyles={customStyles}
     defaultSortField='date'
-    defaultSortAsc={false} />);
-  /*
-    const make_list = () => {
-      return props.history.slice(0, 15).map((event) =>
-        <li key={event.key}>{event.date}: {event.winner} beats {event.loser}, +/- {event.mmr_change} MMR</li>
-      );
-    }
-    return <ul>{make_list()}</ul>;*/
+    defaultSortAsc={false}
+    dense
+    pagination
+    paginationRowsPerPageOptions={[10]}
+    paginationComponentOptions={{ rowsPerPageText: 'Rows per page:', rangeSeparatorText: 'of', noRowsPerPage: true, selectAllRowsItem: false, selectAllRowsItemText: 'All' }} />);
 }
 
 const Login = props => {
@@ -251,7 +256,7 @@ const Profile = props => {
 const Content = props => {
   const views = [<LeaderboardView leaderboard={props.leaderboard} />,
   <ReportView players={props.leaderboard} submit={props.submit} />,
-  <History history={props.history.slice(0, 15)} />,
+  <History history={props.history} />,
   props.login ? <Login submit={props.loginfunc} />
     : <Profile history={props.history}
       user={props.user}

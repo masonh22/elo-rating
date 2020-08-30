@@ -4,7 +4,7 @@
 
 .content-container {
   background-color: #bfcbe2;
-  min-height: 95vh;
+  min-height: 85vh;
   display: flex;
   flex-direction: column;
   align-items: center;
