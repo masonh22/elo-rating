@@ -52,6 +52,7 @@ const LeaderboardView = props => {
       name: 'Games Played',
       selector: 'games_played',
       sortable: true,
+      center: true,
     },
   ]
   const customStyles = {
@@ -153,14 +154,15 @@ const History = props => {
       name: 'MMR Change',
       selector: 'mmr_change',
       sortable: true,
+      center: true,
     },
   ]
   const customStyles = {
     rows: {
-      style: { fontSize: '20px' }
+      style: { fontSize: '15px' }
     },
     headCells: {
-      style: { fontSize: '20px' }
+      style: { fontSize: '15px' }
     }
   };
   return (<DataTable
@@ -198,7 +200,7 @@ const Login = props => {
       <Button
         variant="contained"
         color="primary"
-        onClick={() => props.submit(user, pass)}
+        onClick={() => props.submit(user.toLowerCase(), pass)}
       >
         Submit
       </Button>
