@@ -31,7 +31,7 @@ const BottomNav = props => {
       <BottomNavigationAction label="Leaderboard" />
       <BottomNavigationAction label="Report Game" />
       <BottomNavigationAction label="History" />
-      <BottomNavigationAction label="Log in" />
+      <BottomNavigationAction label={props.login ? "Log in" : "Profile"} />
     </BottomNavigation>
   )
 }
@@ -132,33 +132,50 @@ const ReportView = props => {
   )
 }
 
-class History extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { history: [] };
-  }
-
-  componentDidMount() {
-    database.ref('history').limitToLast(15).once('value', data => {
-      this.setState(() => {
-        const history = [];
-        data.forEach(event => {
-          history.push(event.toJSON());
-        })
-        return { history: history.reverse() };
-      });
-    });
-  }
-
-  make_list() {
-    return this.state.history.map((event, rank) =>
-      <li key={event.key}>{event.date}: {event.winner} beats {event.loser}, +/- {event.mmr_change} MMR</li>
-    );
-  }
-
-  render() {
-    return <ul>{this.make_list()}</ul>;
-  }
+const History = props => {
+  const columns = [
+    {
+      name: 'Date',
+      selector: 'date',
+      sortable: true,
+    },
+    {
+      name: 'Winner',
+      selector: 'winner',
+      sortable: true,
+    },
+    {
+      name: 'Loser',
+      selector: 'loser',
+      sortable: true,
+    },
+    {
+      name: 'MMR Change',
+      selector: 'mmr_change',
+      sortable: true,
+    },
+  ]
+  const customStyles = {
+    rows: {
+      style: { fontSize: '20px' }
+    },
+    headCells: {
+      style: { fontSize: '20px' }
+    }
+  };
+  return (<DataTable
+    columns={columns}
+    data={props.history}
+    customStyles={customStyles}
+    defaultSortField='date'
+    defaultSortAsc={false} />);
+  /*
+    const make_list = () => {
+      return props.history.slice(0, 15).map((event) =>
+        <li key={event.key}>{event.date}: {event.winner} beats {event.loser}, +/- {event.mmr_change} MMR</li>
+      );
+    }
+    return <ul>{make_list()}</ul>;*/
 }
 
 const Login = props => {
@@ -188,11 +205,55 @@ const Login = props => {
     </div>);
 }
 
+const UpdatePass = props => {
+  const [oldpass, setOldpass] = React.useState('');
+  const [newpass, setNewpass] = React.useState('');
+
+  return (
+    <div className="selectors-2">
+      <TextField
+        id="oldpass-input"
+        label="Old Password"
+        type="password"
+        onChange={(v) => setOldpass(v.target.value)} />
+      <TextField
+        id="password-input"
+        label="New Password"
+        type="password"
+        onChange={(v) => setNewpass(v.target.value)}
+      />
+      <Button
+        variant="contained"
+        color="primary"
+        onClick={() => props.update(oldpass, newpass)}
+      >
+        Submit
+      </Button>
+    </div>);
+}
+
+const Profile = props => {
+  const history = props.history.filter(event =>
+    event.winner === props.user.name || event.loser === props.user.name);
+  const message =
+    `Current MMR: ${props.user.rating}. Games Played: ${props.user.games_played}`;
+
+  return (<div>
+    <h2>{props.user.name}</h2>
+    <p>{message}</p>
+    <History history={history} />
+    <UpdatePass update={props.updatepass} />
+  </div>);
+}
+
 const Content = props => {
   const views = [<LeaderboardView leaderboard={props.leaderboard} />,
   <ReportView players={props.leaderboard} submit={props.submit} />,
-  <History />,
-  <Login submit={props.login} />];
+  <History history={props.history.slice(0, 15)} />,
+  props.login ? <Login submit={props.loginfunc} />
+    : <Profile history={props.history}
+      user={props.user}
+      updatepass={props.updatepass} />];
   return views[props.view];
 }
 
@@ -208,6 +269,7 @@ class App extends React.Component {
       current_view: 0,
       players: {},
       leaderboard: [],
+      history: [],
       user: null,
     };
   }
@@ -215,15 +277,26 @@ class App extends React.Component {
   componentDidMount() {
     database.ref('users').orderByChild('rating').on('value', data => {
       this.setState(() => {
-        const leaderboard = [];
-        data.forEach(user => {
-          const player = user.toJSON();
-          player['username'] = user.key;
-          leaderboard.push(player);
+        const json = data.toJSON();
+        const leaderboard = Object.keys(json).map(user => {
+          const player = json[user]
+          player['username'] = user;
+          return player;
         });
         return { players: data.val(), leaderboard };
-      })
+      });
     });
+    database.ref('history').on('value', data => {
+      this.setState(() => {
+        const json = data.toJSON();
+        const history = Object.keys(json).map(key => json[key]);
+        return { history: history.reverse() };
+      });
+    });
+  }
+
+  change_current_view(val) {
+    this.setState({ current_view: val });
   }
 
   login(user, pass) {
@@ -236,13 +309,22 @@ class App extends React.Component {
         alert("Password is incorrect");
         return;
       }
-      alert(`Signed in as ${user}`);
-      this.setState({ current_view: 0, user: user });
+      this.setState(state => ({
+        user: Object.assign({ username: user }, state.players[user])
+      }));
     });
   }
 
-  change_current_view(val) {
-    this.setState({ current_view: val });
+  update_password(old, newpass) {
+    database.ref('passwords').once('value').then(data => {
+      if (md5(old) !== data.val()[this.state.user.username]) {
+        alert("Password is incorrect");
+      }
+      const newobj = {};
+      newobj[this.state.user.username] = md5(newpass);
+      database.ref('passwords').update(newobj);
+      alert("Password changed");
+    });
   }
 
   add_game(winner, loser) {
@@ -288,14 +370,19 @@ class App extends React.Component {
         <div className="content-container">
           <Content
             leaderboard={this.state.leaderboard}
+            history={this.state.history}
             view={this.state.current_view}
             submit={(winner, loser) => this.add_game(winner, loser)}
-            login={(user, pass) => this.login(user, pass)} />
+            login={this.state.user === null}
+            loginfunc={(user, pass) => this.login(user, pass)}
+            user={this.state.user}
+            updatepass={(p1, p2) => this.update_password(p1, p2)} />
         </div>
         <div className="footer">
           <BottomNav
             value={this.state.current_view}
-            update={(v) => this.change_current_view(v)} />
+            update={(v) => this.change_current_view(v)}
+            login={this.state.user === null} />
         </div>
       </div>
     );
