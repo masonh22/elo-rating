@@ -181,7 +181,7 @@ const History = props => {
     defaultSortAsc={false}
     dense
     pagination
-    paginationRowsPerPageOptions={[10]}
+    paginationRowsPerPageOptions={[10, 50]}
     paginationComponentOptions={{ rowsPerPageText: 'Rows per page:', rangeSeparatorText: 'of', noRowsPerPage: true, selectAllRowsItem: false, selectAllRowsItemText: 'All' }} />);
 }
 
@@ -385,12 +385,12 @@ class App extends React.Component {
             user={this.state.user}
             updatepass={(p1, p2) => this.update_password(p1, p2)} />
         </div>
-        <div className="footer">
+        <footer className="footer">
           <BottomNav
             value={this.state.current_view}
             update={(v) => this.change_current_view(v)}
             login={this.state.user === null} />
-        </div>
+        </footer>
       </div>
     );
   }
